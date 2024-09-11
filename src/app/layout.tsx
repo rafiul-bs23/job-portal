@@ -1,6 +1,9 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import {Suspense} from "react";
+import Loading from "@/app/loading";
+import CommonLayout from "@/components/common-layout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,17 +22,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <body
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    >
+    <Suspense fallback={<Loading/>}>
+      {/* eslint-disable-next-line react/no-children-prop */}
+      <CommonLayout children={children}/>
+    </Suspense>
+    </body>
     </html>
   );
 }
